@@ -3,6 +3,7 @@ using UnityEngine;
 using Vuforia;
 using HoloToolkit.Unity;
 using System;
+using UnityEditor;
 
 namespace MARKit
 {
@@ -22,7 +23,8 @@ namespace MARKit
         [Tooltip("The Prefab to spawn")]
         public GameObject PrefabToSpawn;
 
-        
+        [SerializeField][Tooltip("Oject which implements the IDataProvider Interface.")]
+        public LocalDataProvider DataProvider;
         #endregion
 
         #region PUBLIC_METHODS
@@ -60,8 +62,10 @@ namespace MARKit
             }
 
             //Inistaniate new gameobject
-            GameObject go;
-            go = Instantiate(PrefabToSpawn, position, rotation) as GameObject;
+            GameObject go = DataProvider.GetGameObjectById(ID);
+
+            go.transform.position = position;
+            go.transform.rotation = rotation;
 
             if (addToDictenary)
             {
@@ -92,3 +96,4 @@ namespace MARKit
 }
 
 
+ 

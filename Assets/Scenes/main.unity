@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 120148388}
   - component: {fileID: 120148387}
   - component: {fileID: 120148386}
+  - component: {fileID: 120148389}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -152,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PrefabToSpawn: {fileID: 1073561609850680, guid: ffd6d97873f101845885bb874187de39,
     type: 2}
+  DataProvider: {fileID: 120148389}
 --- !u!4 &120148388
 Transform:
   m_ObjectHideFlags: 0
@@ -165,6 +167,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &120148389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 120148385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64d97dc7445920b459cab998f9639622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabToSpawn: {fileID: 1073561609850680, guid: ffd6d97873f101845885bb874187de39,
+    type: 2}
+  Colors:
+  - {fileID: 2100000, guid: d048a821f0920144aae9e16227d2b1aa, type: 2}
+  - {fileID: 2100000, guid: 2977d2cb2322ac44192d2a6b56cbbdce, type: 2}
+  - {fileID: 2100000, guid: 722cae314d52fa94d90cc33d0d36b192, type: 2}
+  - {fileID: 2100000, guid: 3f10b63c2c1bb6d47ba0cbdc34f7ed0b, type: 2}
+  - {fileID: 2100000, guid: 5cec6582755fca640be3d4abd073ce85, type: 2}
+  - {fileID: 2100000, guid: bcd93961c32e8b74e85fdf5a24af4f8a, type: 2}
 --- !u!1001 &324069134
 Prefab:
   m_ObjectHideFlags: 0
