@@ -2,8 +2,6 @@
 using UnityEngine;
 using Vuforia;
 using HoloToolkit.Unity;
-using System;
-using UnityEditor;
 
 namespace MARKit
 {
