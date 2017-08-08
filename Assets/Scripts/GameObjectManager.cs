@@ -2,6 +2,7 @@
 using UnityEngine;
 using Vuforia;
 using HoloToolkit.Unity;
+using System;
 
 namespace MARKit
 {
@@ -56,6 +57,34 @@ namespace MARKit
             if (addToDictionary)
             {
                 _spawnedObjects.Add(ID, go);
+            }
+        }
+
+        /// <summary>
+        /// Delets an object by a given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteObjectById(ulong id)
+        {
+            if (_spawnedObjects.ContainsKey(id))
+            {
+
+                //get object from dictenary
+                var go = _spawnedObjects[id];
+
+                //remove object from dictenary
+                _spawnedObjects.Remove(id);
+
+                //delete Object
+                Destroy(go);
+
+                return true;
+            }
+            else
+            {
+                //Object not found.
+                return false;
             }
         }
 
