@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using HoloToolkit.Unity;
+using UnityEngine;
 
 namespace MARKit
 {
-    public interface IDataProvider
+    public abstract class DataProvider: Singleton<DataProvider>
     {
-        GameObject GetGameObjectById(ulong id);
+        public abstract GameObject GetGameObjectById(ulong id);
     }
 }

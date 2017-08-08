@@ -18,25 +18,18 @@ namespace MARKit
 
         #region PUBLIC_MEMBER_VARIABLES
 
-        [Tooltip("The Prefab to spawn")]
-        public GameObject PrefabToSpawn;
-
-        [SerializeField][Tooltip("Oject which implements the IDataProvider Interface.")]
-        public LocalDataProvider DataProvider;
+        [Tooltip("Oject which implements the IDataProvider Interface.")]
+        public DataProvider DataProvider;
         #endregion
 
         #region PUBLIC_METHODS
         void Start()
         {
-            if (PrefabToSpawn == null)
-            {
-                Debug.LogError("No Prefab selected.");
-            }
             _spawnedObjects = new Dictionary<ulong, GameObject>();
         }
 
         /// <summary>
-        ///  Spawns an object on the position of the vumar
+        ///  Spawns an object on the position of the VuMark
         /// </summary>
         /// <param name="vumark"></param>
         /// <param name="addToDictenary"></param>
@@ -51,32 +44,38 @@ namespace MARKit
         /// <param name="ID"></param>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
-        /// <param name="addToDictenary"></param>
-        public void SpawnObject(ulong ID, Vector3 position, Quaternion rotation, bool addToDictenary = true)
+        /// <param name="addToDictionary"></param>
+        public void SpawnObject(ulong ID, Vector3 position, Quaternion rotation, bool addToDictionary = true)
         {
-            if (PrefabToSpawn == null)
-            {
-                return;
-            }
-
             //Inistaniate new gameobject
             GameObject go = DataProvider.GetGameObjectById(ID);
 
             go.transform.position = position;
             go.transform.rotation = rotation;
 
-            if (addToDictenary)
+            if (addToDictionary)
             {
                 _spawnedObjects.Add(ID, go);
             }
         }
 
 
+        /// <summary>
+        /// checks if a given id is already spawned.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool ContainsID(ulong id)
         {
             return _spawnedObjects.ContainsKey(id);
         }
 
+
+        /// <summary>
+        /// Index operator.
+        /// </summary>
+        /// <param name="key">ID of VuMark</param>
+        /// <returns>GameObject to ID</returns>
         public GameObject this[ulong key]
         {
             get

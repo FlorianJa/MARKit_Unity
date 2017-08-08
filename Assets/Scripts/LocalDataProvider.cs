@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MARKit
 {
-    public class LocalDataProvider : Singleton<LocalDataProvider>, IDataProvider
+    public class LocalDataProvider : DataProvider
     {
 
         #region PUBLIC_MEMBER_VARIABLES
@@ -23,7 +23,7 @@ namespace MARKit
             }
         }
 
-        public GameObject GetGameObjectById(ulong id)
+        public override GameObject GetGameObjectById(ulong id)
         {
             if(PrefabToSpawn == null)
             {
