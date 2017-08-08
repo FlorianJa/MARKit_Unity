@@ -25,26 +25,34 @@ namespace MARKit
 
         public override GameObject GetGameObjectById(ulong id)
         {
-            if(PrefabToSpawn == null)
+            if (PrefabToSpawn == null)
             {
                 Debug.LogError("Trying to spawn a gameobject which setting a prefab tio spawn.");
                 return null;
             }
 
-            //Inistaniate new gameobject
+            //Instantiate new gameobject
             GameObject go;
             go = Instantiate(PrefabToSpawn, Vector3.zero, Quaternion.identity) as GameObject;
 
+            //get cubecontroller
+            var cubeController = go.GetComponent<CubeController>();
+            //save id in cubecontroller
+            cubeController.ID = id;
+
+
+            //get renderer of the cube
             var renderer = go.GetComponent<Renderer>();
+
             if (renderer != null)
             {
-
                 //Color the gameobject
                 renderer.material = Colors[(int)id % Colors.Length];
+                cubeController.Color = Colors[(int)id % Colors.Length].name;
             }
             return go;
-        }
 
+        }
     }
 }
 
