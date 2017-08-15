@@ -60,6 +60,10 @@ namespace MARKit
                 default:
                     break;
             }
+            if (eventData.RecognizedText == "Remove")
+            {
+                Delete();
+            }
         }
 
 
@@ -73,7 +77,7 @@ namespace MARKit
         /// </summary>
         private void Delete()
         {
-            GameObjectManager.Instance.DeleteObjectByGameObject(gameObject);
+            GameObjectManager.Instance.DeleteObjectById(ID);
         }
 
 

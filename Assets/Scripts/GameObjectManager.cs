@@ -19,16 +19,8 @@ namespace MARKit
 
         #region PUBLIC_MEMBER_VARIABLES
 
-        [Tooltip("Forward rotation updates?")]
-        public bool UpdateObjectRotation;
-        [Tooltip("Forward position updates?")]
-        public bool UpdateObjectPosition;
-        [Tooltip("Forward marker information if marker was already scanned?")]
-        public bool MarkerCanBeScannedMultipleTimes;
-
-        public CustomPrefabSpawnManager spawnManager;
-        public GameObject SpawnParent;
-
+        [Tooltip("Oject which implements the IDataProvider Interface.")]
+        public DataProvider DataProvider;
         #endregion
 
         #region PUBLIC_METHODS
@@ -37,54 +29,65 @@ namespace MARKit
             _spawnedObjects = new Dictionary<ulong, GameObject>();
         }
 
-
         /// <summary>
-        /// Spawns a new object from VuMarkAbstractBehaviour
+        ///  Spawns an object on the position of the VuMark
         /// </summary>
         /// <param name="vumark"></param>
-        public void UpdateFromVumark(VuMarkAbstractBehaviour behaviour)
+        /// <param name="addToDictenary"></param>
+        public void SpawnObject(VuMarkAbstractBehaviour vumark, bool addToDictenary = true)
         {
-            UpdateFromVumark(behaviour.VuMarkTarget.InstanceId.NumericValue, behaviour.transform.position, behaviour.transform.rotation);
-        }
-
-        public void UpdateFromVumark(ulong id, Vector3 position, Quaternion rotation)
-        {
-            if (MarkerCanBeScannedMultipleTimes || !spawnManager.ContainsMarkerID((long)id))
-            {
-                SpawnObject(id, position, rotation);
-                return;
-            }
-
-            if (UpdateObjectRotation)
-            {
-                position = spawnManager.transform.InverseTransformPoint(position);//SpawnParent.transform.InverseTransformPoint(position); ;
-                spawnManager.UpdatePosition((long)id, position);
-            }
-            if (UpdateObjectPosition)
-            {
-                spawnManager.UpdateRotation((long)id, rotation);
-            }
+            SpawnObject(vumark.VuMarkTarget.InstanceId.NumericValue, vumark.transform.position, vumark.transform.rotation, addToDictenary);
         }
 
         /// <summary>
-        /// Spawns a new object on a given position and rotation
+        /// Spawns an object on a given position with a given rotation
         /// </summary>
         /// <param name="ID"></param>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
-        public void SpawnObject(ulong ID, Vector3 position, Quaternion rotation)
+        /// <param name="addToDictionary"></param>
+        public void SpawnObject(ulong ID, Vector3 position, Quaternion rotation, bool addToDictionary = true)
         {
-            var dataModel = new CustomSyncSpawnedObject();
-            dataModel.ID.Value = (long)ID;
+            //Inistaniate new gameobject
+            GameObject go = DataProvider.GetGameObjectById(ID);
 
-            position = spawnManager.transform.InverseTransformPoint(position);//SpawnParent.transform.InverseTransformPoint(position);
-            spawnManager.Spawn(dataModel, position, rotation, SpawnParent, "SpawnObject", true);
+            go.transform.position = position;
+            go.transform.rotation = rotation;
+
+            if (addToDictionary)
+            {
+                _spawnedObjects.Add(ID, go);
+            }
         }
 
-        public void DeleteObjectByGameObject(GameObject gameObject)
+        /// <summary>
+        /// Delets an object by a given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteObjectById(ulong id)
         {
-            spawnManager.Delete(gameObject);
+            if (_spawnedObjects.ContainsKey(id))
+            {
+
+                //get object from dictenary
+                var go = _spawnedObjects[id];
+
+                //remove object from dictenary
+                _spawnedObjects.Remove(id);
+
+                //delete Object
+                Destroy(go);
+
+                return true;
+            }
+            else
+            {
+                //Object not found.
+                return false;
+            }
         }
+
 
         /// <summary>
         /// checks if a given id is already spawned.
