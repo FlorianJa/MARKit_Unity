@@ -15,12 +15,8 @@ namespace MARKit
         #endregion // PRIVATE_MEMBER_VARIABLES
 
         #region PUBLIC_MEMBER_VARIABLES
-        [Tooltip("Forward rotation updates?")]
-        public bool UpdateObjectRotation;
-        [Tooltip("Forward position updates?")]
-        public bool UpdateObjectPosition;
-        [Tooltip("Forward marker information if marker was already scanned?")]
-        public bool MarkerCanBeScannedMultipleTimes;
+
+
 
         #endregion // PUBLIC_MEMBER_VARIABLES
 
@@ -38,28 +34,10 @@ namespace MARKit
 
         void Update()
         {
-            ulong id;
+            //for each marker tracked there is a behaviour of this marker(eg. position, rotation etc.)
             foreach (var behaviour in _vuMarkManager.GetActiveBehaviours())
             {
-                id = behaviour.VuMarkTarget.InstanceId.NumericValue;
-                if (!_gameObjectManager.ContainsID(id) || MarkerCanBeScannedMultipleTimes)
-                {
-                    _gameObjectManager.SpawnObject(behaviour, !MarkerCanBeScannedMultipleTimes);
-
-                }
-                else
-                {
-                    if (UpdateObjectRotation)
-                    {
-                        _gameObjectManager[id].transform.rotation = behaviour.transform.rotation;
-                    }
-
-                    if (UpdateObjectPosition)
-                    {
-                        _gameObjectManager[id].transform.position = behaviour.transform.position;
-                    }
-                }
-
+                _gameObjectManager.UpdateFromVumark(behaviour);
             }
         }
 
